@@ -1,4 +1,4 @@
-package com.java.b2w.lucas.starwarsplanets.controller;
+package com.java.b2w.lucas.starwarsplanets.utils;
 
 import com.google.gson.Gson;
 import com.java.b2w.lucas.starwarsplanets.model.request.PlanetFromSwapi;

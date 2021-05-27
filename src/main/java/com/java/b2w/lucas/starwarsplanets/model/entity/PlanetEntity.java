@@ -9,7 +9,9 @@ public class PlanetEntity
 
     @MongoId
     private Long id;
+    private String name;
     private String climate;
     private String terrain;
+    private int numberOfFilms;
 
 }
