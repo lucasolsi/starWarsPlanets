@@ -1,14 +1,14 @@
 package com.java.b2w.lucas.starwarsplanets.model.entity;
 
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.annotation.Id;
 
 @Data
 public class PlanetEntity
 {
 
-    @MongoId
-    private Long id;
+    @Id
+    private String id;
     private String name;
     private String climate;
     private String terrain;

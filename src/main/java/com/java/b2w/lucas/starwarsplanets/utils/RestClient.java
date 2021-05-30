@@ -2,6 +2,7 @@ package com.java.b2w.lucas.starwarsplanets.utils;
 
 import com.google.gson.Gson;
 import com.java.b2w.lucas.starwarsplanets.model.request.PlanetFromSwapi;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,42 +10,46 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class RestClient
 {
-    private static final String SWAPI_URL = "https://swapi.dev/api/planets/1/";
-    //private static final String SWAPI_URL_SEARCH = "https://swapi.dev/api/planets/?search={name}";
+    private static final String SWAPI_URL_SEARCH = "https://swapi.dev/api/planets/?search=";
 
     static RestTemplate restTemplate = new RestTemplate();
 
-    public static void main(String[] args)
-    {
-        callGetPlanetUrl();
-    }
-
-    private static void callGetPlanetUrl()
+    public static int findNumberOfFilms(String planetName)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>("params", headers);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(SWAPI_URL, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(SWAPI_URL_SEARCH.concat(planetName), HttpMethod.GET, entity, String.class);
 
-        PlanetFromSwapi planetEntity = new Gson().fromJson(responseEntity.getBody(), PlanetFromSwapi.class);
-        int filmsCount = findNumberOfFilms(planetEntity);
-    }
+        Map<String, Object> map = new GsonJsonParser().parseMap(responseEntity.getBody());
+        List<Object> results = (List<Object>) map.get("results");
 
-    public static int findNumberOfFilms(PlanetFromSwapi planetEntity)
-    {
-        int films;
-        try
+        List<PlanetFromSwapi> planetFromSwapiList = new ArrayList<>();
+        if (!results.isEmpty())
         {
-            films = planetEntity.getFilms().size();
-        }catch (Exception e)
-        {
-            films = 0;
+            for (Object eachResult : results)
+            {
+                planetFromSwapiList.add(new Gson().fromJson(new Gson().toJson(eachResult), PlanetFromSwapi.class));
+            }
+
+            PlanetFromSwapi planetMatch = planetFromSwapiList.stream()
+                    .filter(planetFromSwapi -> planetFromSwapi.getName().equals(planetName))
+                    .findFirst().orElse(null);
+            return planetMatch == null ? 0 : planetMatch.getFilms().size();
+
         }
-        return films;
+        else
+        {
+            return 0;
+        }
+
     }
 
 }
