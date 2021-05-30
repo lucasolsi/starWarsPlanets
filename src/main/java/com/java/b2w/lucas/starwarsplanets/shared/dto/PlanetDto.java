@@ -8,8 +8,9 @@ import java.io.Serializable;
 public class PlanetDto implements Serializable
 {
     private static final long serialVersionUID = -4414893148885140785L;
+    private String id;
     private String name;
     private String climate;
     private String terrain;
-    private String id;
+    private int numberOfFilms;
 }
