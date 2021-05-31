@@ -10,6 +10,7 @@ public interface PlanetService
     List<PlanetDto> getAllPlanets(int page, int limit);
     PlanetDto findPlanetByName(String name);
     PlanetDto findPlanetById(String planetId);
-    void deletePlanet(String planetId);
+    void deletePlanetById(String planetId);
+    void deletePlanetByName(String planetName);
 
 }

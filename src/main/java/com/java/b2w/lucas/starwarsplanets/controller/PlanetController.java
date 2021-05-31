@@ -7,7 +7,9 @@ import com.java.b2w.lucas.starwarsplanets.shared.dto.PlanetDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,5 +51,33 @@ public class PlanetController
         }
 
         return planetResponseList;
+    }
+
+    @GetMapping(path = "/id/{planetId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PlanetResponse getPlanetById(@PathVariable String planetId)
+    {
+        PlanetDto planetDto = planetService.findPlanetById(planetId);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(planetDto, PlanetResponse.class);
+    }
+
+    @GetMapping(path = "/name/{planetName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PlanetResponse getPlanetByName(@PathVariable String planetName)
+    {
+        PlanetDto planetDto = planetService.findPlanetByName(planetName);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(planetDto, PlanetResponse.class);
+    }
+
+    @DeleteMapping(path = "/name/{planetName}")
+    public void deletePlanetByName(@PathVariable String planetName)
+    {
+        planetService.deletePlanetByName(planetName);
+    }
+
+    @DeleteMapping(path = "/id/{planetId}")
+    public void deletePlanetById(@PathVariable String planetId)
+    {
+        planetService.deletePlanetById(planetId);
     }
 }

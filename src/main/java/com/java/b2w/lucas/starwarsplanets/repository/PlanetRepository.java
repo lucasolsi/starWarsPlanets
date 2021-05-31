@@ -6,5 +6,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface PlanetRepository extends MongoRepository<PlanetEntity, String>
 {
     PlanetEntity findByName(String name);
-    PlanetEntity findById();
 }

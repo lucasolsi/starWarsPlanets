@@ -1,5 +1,6 @@
 package com.java.b2w.lucas.starwarsplanets.service.impl;
 
+import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetNotFoundException;
 import com.java.b2w.lucas.starwarsplanets.model.entity.PlanetEntity;
 import com.java.b2w.lucas.starwarsplanets.repository.PlanetRepository;
 import com.java.b2w.lucas.starwarsplanets.service.PlanetService;
@@ -61,18 +62,36 @@ public class PlanetServiceImpl implements PlanetService
     @Override
     public PlanetDto findPlanetByName(String name)
     {
-        return null;
+        PlanetEntity planetFromDb = planetRepository.findByName(name);
+        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with name "+ name + "not found.");
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(planetFromDb, PlanetDto.class);
     }
 
     @Override
     public PlanetDto findPlanetById(String planetId)
     {
-        return null;
+        PlanetEntity planetFromDb = planetRepository.findById(planetId).orElse(null);
+        ModelMapper modelMapper = new ModelMapper();
+        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with id " + planetId + "not found.");
+
+        return modelMapper.map(planetFromDb, PlanetDto.class);
     }
 
     @Override
-    public void deletePlanet(String planetId)
+    public void deletePlanetById(String planetId)
     {
+        PlanetEntity planetToDelete = planetRepository.findById(planetId).orElse(null);
+        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with id " + planetId + "not found.");
+        planetRepository.delete(planetToDelete);
+    }
 
+    @Override
+    public void deletePlanetByName(String planetName)
+    {
+        PlanetEntity planetToDelete = planetRepository.findByName(planetName);
+        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with name " + planetName + "not found.");
+        planetRepository.delete(planetToDelete);
     }
 }
