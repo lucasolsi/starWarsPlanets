@@ -13,6 +13,12 @@ public class PlanetEntity
     private String terrain;
     private int numberOfFilms;
 
+    public PlanetEntity withId(String id)
+    {
+        this.id = id;
+        return this;
+    }
+
     public PlanetEntity withName(String name)
     {
         this.name = name;
@@ -28,6 +34,12 @@ public class PlanetEntity
     public PlanetEntity withTerrain(String terrain)
     {
         this.terrain = terrain;
+        return this;
+    }
+
+    public PlanetEntity withNumberOfFilms(int numberOfFilms)
+    {
+        this.numberOfFilms = numberOfFilms;
         return this;
     }
 }

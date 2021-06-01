@@ -18,7 +18,7 @@ public class SwaggerConfig
             "http://github.com/lucasolsi",
             "lucasolsi@gmail.com");
 
-    ApiInfo apiInfo = new ApiInfo("Star Wars planets Doc",
+    ApiInfo apiInfo = new ApiInfo("Star Wars Planets",
             "REST API for creating and retrieving Star Wars planets. " +
                     "When creating a new planet, this API will communicate with SWAPI to retrieve number of films" +
                     " that this planet appeared.",
@@ -28,11 +28,9 @@ public class SwaggerConfig
     public Docket apiDocket()
     {
         return new Docket(DocumentationType.SWAGGER_2)
-                //.protocols(new HashSet<>(Collections.singletonList("HTTP")))
                 .apiInfo(apiInfo)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.java.b2w.lucas.starwarsplanets"))
-                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
     }
