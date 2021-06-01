@@ -43,7 +43,6 @@ public class RestClient
                     .filter(planetFromSwapi -> planetFromSwapi.getName().equals(planetName))
                     .findFirst().orElse(null);
             return planetMatch == null ? 0 : planetMatch.getFilms().size();
-
         }
         else
         {

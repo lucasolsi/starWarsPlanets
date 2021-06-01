@@ -63,7 +63,7 @@ public class PlanetServiceImpl implements PlanetService
     public PlanetDto findPlanetByName(String name)
     {
         PlanetEntity planetFromDb = planetRepository.findByName(name);
-        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with name "+ name + "not found.");
+        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with name "+ name + " not found.");
         ModelMapper modelMapper = new ModelMapper();
 
         return modelMapper.map(planetFromDb, PlanetDto.class);
@@ -74,7 +74,7 @@ public class PlanetServiceImpl implements PlanetService
     {
         PlanetEntity planetFromDb = planetRepository.findById(planetId).orElse(null);
         ModelMapper modelMapper = new ModelMapper();
-        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with id " + planetId + "not found.");
+        if (planetFromDb == null) throw new PlanetNotFoundException("Planet with id " + planetId + " not found.");
 
         return modelMapper.map(planetFromDb, PlanetDto.class);
     }
@@ -83,7 +83,7 @@ public class PlanetServiceImpl implements PlanetService
     public void deletePlanetById(String planetId)
     {
         PlanetEntity planetToDelete = planetRepository.findById(planetId).orElse(null);
-        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with id " + planetId + "not found.");
+        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with id " + planetId + " not found.");
         planetRepository.delete(planetToDelete);
     }
 
@@ -91,7 +91,7 @@ public class PlanetServiceImpl implements PlanetService
     public void deletePlanetByName(String planetName)
     {
         PlanetEntity planetToDelete = planetRepository.findByName(planetName);
-        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with name " + planetName + "not found.");
+        if (planetToDelete == null) throw new PlanetNotFoundException("Planet with name " + planetName + " not found.");
         planetRepository.delete(planetToDelete);
     }
 }

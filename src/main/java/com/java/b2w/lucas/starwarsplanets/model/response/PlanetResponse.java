@@ -11,5 +11,5 @@ public class PlanetResponse
     private String id;
     private String terrain;
     private String climate;
-    private String numberOfFilms;
+    private int numberOfFilms;
 }
