@@ -1,5 +1,6 @@
 package com.java.b2w.lucas.starwarsplanets.service.impl;
 
+import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetAlreadyExistsException;
 import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetNotFoundException;
 import com.java.b2w.lucas.starwarsplanets.model.entity.PlanetEntity;
 import com.java.b2w.lucas.starwarsplanets.repository.PlanetRepository;
@@ -26,8 +27,8 @@ public class PlanetServiceImpl implements PlanetService
     @Override
     public PlanetDto createPlanet(PlanetDto planet) throws Exception
     {
-        if (planetRepository.findByName(planet.getName()) != null) throw new RuntimeException("Planet with name "
-                + planet.getName() + "already exists");
+        if (planetRepository.findByName(planet.getName()) != null) throw new PlanetAlreadyExistsException("Planet with name "
+                + planet.getName() + " already exists");
 
         ModelMapper modelMapper = new ModelMapper();
         PlanetEntity planetEntity = modelMapper.map(planet, PlanetEntity.class);

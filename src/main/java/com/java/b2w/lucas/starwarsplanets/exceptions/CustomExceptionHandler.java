@@ -13,10 +13,24 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomExceptionHandler
 {
-    @ExceptionHandler(value = {Exception.class})
+    @ExceptionHandler(value = {PlanetNotFoundException.class})
     public ResponseEntity<Object> handlePlanetNotFoundException(PlanetNotFoundException ex, WebRequest request)
     {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request)
+    {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage());
+        return new ResponseEntity<>(exceptionResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {PlanetAlreadyExistsException.class})
+    public ResponseEntity<Object> handlePlanetAlreadyExistsException(PlanetAlreadyExistsException existsException, WebRequest request)
+    {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), existsException.getMessage());
+        return new ResponseEntity<>(exceptionResponse, new HttpHeaders(), HttpStatus.PRECONDITION_FAILED);
     }
 }
