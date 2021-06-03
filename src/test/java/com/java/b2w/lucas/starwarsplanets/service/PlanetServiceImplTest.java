@@ -1,5 +1,6 @@
 package com.java.b2w.lucas.starwarsplanets.service;
 
+import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetAlreadyExistsException;
 import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetNotFoundException;
 import com.java.b2w.lucas.starwarsplanets.model.entity.PlanetEntity;
 import com.java.b2w.lucas.starwarsplanets.repository.PlanetRepository;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,6 +37,8 @@ class PlanetServiceImplTest
     String climate = "arid";
     String terrain = "desert";
 
+    PlanetDto planetDto;
+
     @BeforeEach
     void setUp() throws Exception
     {
@@ -44,6 +49,12 @@ class PlanetServiceImplTest
                 .withTerrain(terrain)
                 .withName(planetName)
                 .withNumberOfFilms(1);
+
+        planetDto = new PlanetDto();
+        planetDto.setName(planetName);
+        planetDto.setClimate(climate);
+        planetDto.setTerrain(terrain);
+        planetDto.setNumberOfFilms(1);
     }
 
     @Test
@@ -70,12 +81,6 @@ class PlanetServiceImplTest
         when(planetRepo.findByName(anyString())).thenReturn(null);
         when(planetRepo.save(any(PlanetEntity.class))).thenReturn(planetEntity);
 
-        PlanetDto planetDto = new PlanetDto();
-        planetDto.setName(planetName);
-        planetDto.setClimate(climate);
-        planetDto.setTerrain(terrain);
-        planetDto.setNumberOfFilms(1);
-
         PlanetDto storedPlanet = planetService.createPlanet(planetDto);
 
         Assertions.assertNotNull(storedPlanet);
@@ -83,5 +88,61 @@ class PlanetServiceImplTest
         Assertions.assertNotNull(storedPlanet.getId());
 
         verify(planetRepo, times(1)).save(any(PlanetEntity.class));
+    }
+
+    @Test
+    void createPlanet_alreadyExistsTest()
+    {
+        when(planetRepo.findByName(anyString())).thenReturn(planetEntity);
+
+        Assertions.assertThrows(PlanetAlreadyExistsException.class,
+                () -> planetService.createPlanet(planetDto));
+    }
+
+    @Test
+    void deletePlanetByIdTest()
+    {
+        when(planetRepo.findById(planetId)).thenReturn(java.util.Optional.ofNullable(planetEntity));
+        planetService.deletePlanetById(planetId);
+        verify(planetRepo).delete(planetEntity);
+    }
+
+    @Test
+    void deletePlanetByName_notFoundTest()
+    {
+        when(planetRepo.findByName(anyString())).thenReturn(null);
+        Assertions.assertThrows(PlanetNotFoundException.class, () ->
+                planetService.deletePlanetByName(planetName));
+    }
+
+    @Test
+    void findPlanetByIdTest()
+    {
+        when(planetRepo.findById(anyString())).thenReturn(java.util.Optional.ofNullable(planetEntity));
+        PlanetDto planetDto = planetService.findPlanetById(planetId);
+        Assertions.assertEquals(planetEntity.getName(), planetDto.getName());
+    }
+
+    @Test
+    void deletePlanetById()
+    {
+        when(planetRepo.findById(anyString())).thenReturn(Optional.of(planetEntity));
+        planetService.deletePlanetById(planetId);
+        verify(planetRepo).delete(planetEntity);
+    }
+
+    @Test
+    void deletePlanetByName()
+    {
+        when(planetRepo.findByName(anyString())).thenReturn(planetEntity);
+        planetService.deletePlanetByName(anyString());
+        verify(planetRepo).delete(any());
+    }
+
+    @Test
+    void deletePlanetById_notFoundExceptionTest()
+    {
+        when(planetRepo.findById(anyString())).thenReturn(Optional.empty());
+        Assertions.assertThrows(PlanetNotFoundException.class, () -> planetService.deletePlanetById(anyString()));
     }
 }

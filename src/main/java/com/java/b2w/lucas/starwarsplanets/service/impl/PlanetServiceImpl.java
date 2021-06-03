@@ -25,7 +25,7 @@ public class PlanetServiceImpl implements PlanetService
     PlanetRepository planetRepository;
 
     @Override
-    public PlanetDto createPlanet(PlanetDto planet) throws Exception
+    public PlanetDto createPlanet(PlanetDto planet) throws PlanetAlreadyExistsException
     {
         if (planetRepository.findByName(planet.getName()) != null) throw new PlanetAlreadyExistsException("Planet with name "
                 + planet.getName() + " already exists");
@@ -33,8 +33,9 @@ public class PlanetServiceImpl implements PlanetService
         ModelMapper modelMapper = new ModelMapper();
         PlanetEntity planetEntity = modelMapper.map(planet, PlanetEntity.class);
 
-        int numberOfFilmsFromApi = RestClient.findNumberOfFilms(planet.getName());
-        planetEntity.setNumberOfFilms(numberOfFilmsFromApi);
+        //int numberOfFilmsFromApi = RestClient.findNumberOfFilms(planet.getName());
+        //planetEntity.setNumberOfFilms(numberOfFilmsFromApi);
+        planetEntity.setNumberOfFilms(RestClient.findNumberOfFilms(planet.getName()));
 
         PlanetEntity planetCreated = planetRepository.save(planetEntity);
 

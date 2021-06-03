@@ -1,12 +1,13 @@
 package com.java.b2w.lucas.starwarsplanets.service;
 
+import com.java.b2w.lucas.starwarsplanets.exceptions.PlanetAlreadyExistsException;
 import com.java.b2w.lucas.starwarsplanets.shared.dto.PlanetDto;
 
 import java.util.List;
 
 public interface PlanetService
 {
-    PlanetDto createPlanet(PlanetDto planetDto) throws Exception;
+    PlanetDto createPlanet(PlanetDto planetDto) throws PlanetAlreadyExistsException;
     List<PlanetDto> getAllPlanets(int page, int limit);
     PlanetDto findPlanetByName(String name);
     PlanetDto findPlanetById(String planetId);
