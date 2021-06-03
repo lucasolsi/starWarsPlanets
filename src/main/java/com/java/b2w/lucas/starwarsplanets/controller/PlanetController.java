@@ -6,7 +6,9 @@ import com.java.b2w.lucas.starwarsplanets.service.PlanetService;
 import com.java.b2w.lucas.starwarsplanets.shared.dto.PlanetDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,13 +30,13 @@ public class PlanetController
     PlanetService planetService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PlanetResponse createPlanet(@RequestBody PlanetRequest planetRequest)
+    public ResponseEntity<PlanetResponse> createPlanet(@RequestBody PlanetRequest planetRequest)
     {
         ModelMapper modelMapper = new ModelMapper();
         PlanetDto planetDto = modelMapper.map(planetRequest, PlanetDto.class);
 
         PlanetDto createdPlanetDto = planetService.createPlanet(planetDto);
-        return modelMapper.map(createdPlanetDto, PlanetResponse.class);
+        return new ResponseEntity<>(modelMapper.map(createdPlanetDto, PlanetResponse.class), HttpStatus.CREATED);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,10 +60,10 @@ public class PlanetController
     }
 
     @GetMapping(path = "/name/{planetName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public PlanetResponse getPlanetByName(@PathVariable String planetName)
+    public ResponseEntity<PlanetResponse> getPlanetByName(@PathVariable String planetName)
     {
         PlanetDto planetDto = planetService.findPlanetByName(planetName);
-        return new ModelMapper().map(planetDto, PlanetResponse.class);
+        return new ResponseEntity<>(new ModelMapper().map(planetDto, PlanetResponse.class), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/name/{planetName}")
