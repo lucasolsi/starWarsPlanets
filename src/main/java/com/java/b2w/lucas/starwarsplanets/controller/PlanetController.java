@@ -28,7 +28,7 @@ public class PlanetController
     PlanetService planetService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PlanetResponse createPlanet(@RequestBody PlanetRequest planetRequest) throws Exception
+    public PlanetResponse createPlanet(@RequestBody PlanetRequest planetRequest)
     {
         ModelMapper modelMapper = new ModelMapper();
         PlanetDto planetDto = modelMapper.map(planetRequest, PlanetDto.class);
@@ -45,10 +45,7 @@ public class PlanetController
         List<PlanetResponse> planetResponseList = new ArrayList<>();
         List<PlanetDto> planetDtoList = planetService.getAllPlanets(page, limit);
 
-        for (PlanetDto eachPlanet : planetDtoList)
-        {
-            planetResponseList.add(modelMapper.map(eachPlanet, PlanetResponse.class));
-        }
+        planetDtoList.forEach(planetDto -> planetResponseList.add(modelMapper.map(planetDto, PlanetResponse.class)));
 
         return planetResponseList;
     }
@@ -57,16 +54,14 @@ public class PlanetController
     public PlanetResponse getPlanetById(@PathVariable String planetId)
     {
         PlanetDto planetDto = planetService.findPlanetById(planetId);
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(planetDto, PlanetResponse.class);
+        return new ModelMapper().map(planetDto, PlanetResponse.class);
     }
 
     @GetMapping(path = "/name/{planetName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PlanetResponse getPlanetByName(@PathVariable String planetName)
     {
         PlanetDto planetDto = planetService.findPlanetByName(planetName);
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(planetDto, PlanetResponse.class);
+        return new ModelMapper().map(planetDto, PlanetResponse.class);
     }
 
     @DeleteMapping(path = "/name/{planetName}")

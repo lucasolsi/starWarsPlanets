@@ -33,8 +33,6 @@ public class PlanetServiceImpl implements PlanetService
         ModelMapper modelMapper = new ModelMapper();
         PlanetEntity planetEntity = modelMapper.map(planet, PlanetEntity.class);
 
-        //int numberOfFilmsFromApi = RestClient.findNumberOfFilms(planet.getName());
-        //planetEntity.setNumberOfFilms(numberOfFilmsFromApi);
         planetEntity.setNumberOfFilms(RestClient.findNumberOfFilms(planet.getName()));
 
         PlanetEntity planetCreated = planetRepository.save(planetEntity);
@@ -52,11 +50,7 @@ public class PlanetServiceImpl implements PlanetService
         List<PlanetEntity> planets = planetEntityPage.getContent();
 
         ModelMapper modelMapper = new ModelMapper();
-        for (PlanetEntity eachPlanet : planets)
-        {
-            PlanetDto planetDto = modelMapper.map(eachPlanet, PlanetDto.class);
-            planetDtoList.add(planetDto);
-        }
+        planets.forEach(planetEntity -> planetDtoList.add(modelMapper.map(planetEntity,PlanetDto.class)));
 
         return planetDtoList;
     }
