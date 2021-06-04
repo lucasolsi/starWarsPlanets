@@ -2,9 +2,9 @@
 
 A long time ago in a galaxy far, far away...
 
-A group of developers is developing a game with Star Wars information.
+A group of developers is creating a game with Star Wars information.
 
-In the middle of the process, one very special developer was summoned to help.
+In the middle of the process, one very special developer (**SPOILER ALERT**: me) was summoned to help.
 His role was to implement an API containing information about Star Wars planets.
 
 - [Star Wars Planets](#star-wars-planets)
