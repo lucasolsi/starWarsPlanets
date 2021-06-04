@@ -6,7 +6,10 @@ A group of developers is developing a game with Star Wars information.
 
 In the middle of the process, one very special developer was summoned to help.
 His role was to implement an API containing information about Star Wars planets.
+
 - [Star Wars Planets](#star-wars-planets)
+  - [Requirements](#requirements)
+  - [Running the application](#running-the-application)
   - [API Doc](#api-doc)
   - [Planet characteristics](#planet-characteristics)
   - [Technologies involved](#technologies-involved)
@@ -16,29 +19,43 @@ His role was to implement an API containing information about Star Wars planets.
     - [List planets](#list-planets)
     - [Find planet](#find-planet)
     - [Remove planet](#remove-planet)
+
+## Requirements
+
+- MongoDB
+
+    Running on localhost:27017
+
+## Running the application
+
+To run this API you'll need to execute the following command on your terminal:
+
+    mvn spring-boot:run
+
 ## API Doc
+
 A Swagger document for this API can be found in:
 
     http://localhost:8080/starwars/swagger-ui/index.html
 
 ## Planet characteristics
 
-* Name
-* Climate
-* Terrain
+- Name
+- Climate
+- Terrain
 
 That wasn't all! One more thing was necessary: **retrieve information from an external API**. He was requested to retrieve the number of films where each created planet appeared, from [SWAPI](https://swapi.dev).
 
 ## Technologies involved
 
-* Spring Boot
-* Spring Data MongoDB
-* Lombok
-* Gson
-* ModelMapper
-* Swagger
-* JUnit
-* Mockito
+- Spring Boot
+- Spring Data MongoDB
+- Lombok
+- Gson
+- ModelMapper
+- Swagger
+- JUnit
+- Mockito
 
 ## Utilities
 
