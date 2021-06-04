@@ -24,7 +24,7 @@ His role was to implement an API containing information about Star Wars planets.
 
 - MongoDB
 
-    Running on localhost:27017
+    Running on localhost:27017 and a database called "starwars".
 
 ## Running the application
 
